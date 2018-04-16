@@ -1,5 +1,72 @@
-import static org.junit.Assert.*;
+package com.wordsmith.transformation.dao;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.google.common.collect.ImmutableList;
+import com.wordsmith.transformation.domain.Transformation;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TransformationRepositoryTest {
 
+    @Autowired
+    private TransformationRepository transformationRepository;
+
+    @After
+    public void after() {
+        transformationRepository.deleteAll();
+    }
+
+    @Test
+    public void shouldSaveAndGetTransformation() {
+        final Transformation transformation = Transformation.builder()
+            .original("a")
+            .transformed("b")
+            .build();
+
+        final Transformation saved = transformationRepository.save(transformation);
+        final Transformation result = transformationRepository.findById(saved.getId())
+            .orElseThrow(AssertionError::new);
+
+        assertThat(result.getId()).isEqualTo(saved.getId());
+        assertThat(result.getCreated()).isEqualTo(saved.getCreated());
+        assertThat(result.getOriginal()).isEqualTo("a");
+        assertThat(result.getTransformed()).isEqualTo("b");
+    }
+
+    @Test
+    public void getNonExistingEntityReturnsEmptyOptional() {
+        final Optional<Transformation> result =
+            transformationRepository.findById(ThreadLocalRandom.current().nextLong(10000, 20000));
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void getAllEntities() {
+        final int numberOfEntities = 10;
+        final List<Transformation> entities = IntStream.range(0, numberOfEntities)
+            .mapToObj(i ->
+                Transformation.builder()
+                    .original(Integer.toString(i))
+                    .transformed(Integer.toString(i))
+                    .build()
+            )
+            .collect(ImmutableList.toImmutableList());
+
+        transformationRepository.saveAll(entities);
+
+        final List<Transformation> allEntities = transformationRepository.findAll();
+
+        assertThat(allEntities).hasSize(numberOfEntities);
+    }
 }

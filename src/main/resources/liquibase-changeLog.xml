@@ -1,6 +1,18 @@
-databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: johan
-      - sql:
-        sql: CREATE TABLE transformation (id SERIAL PRIMARY KEY, from VARCHAR(2048), to VARCHAR(2048), created TIMESTAMP)
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="johan">
+        <sql dbms="postgresql" endDelimiter=";">
+            CREATE TABLE transformation (
+            id SERIAL PRIMARY KEY,
+            original VARCHAR(2048),
+            transformed VARCHAR(2048),
+            created TIMESTAMP);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

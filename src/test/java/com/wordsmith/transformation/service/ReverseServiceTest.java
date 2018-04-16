@@ -1,6 +1,6 @@
 package com.wordsmith.transformation.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class ReverseServiceTest {
         final String expected =
             StringUtils.repeat("ehT der xof sessorc eht eci, tnetni no enon fo ym ssenisub.", 10000);
 
-        assertEquals(expected, reverseService.reverse(input));
+        assertThat(reverseService.reverse(input)).isEqualTo(expected);
     }
 
     @Test
@@ -24,7 +24,7 @@ public class ReverseServiceTest {
         final String expected =
             StringUtils.repeat("ssenisubymfoenonnotnetnieciehtsessorcxofderehT", 10000);
 
-        assertEquals(expected, reverseService.reverse(input));
+        assertThat(reverseService.reverse(input)).isEqualTo(expected);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class ReverseServiceTest {
         final String input = "The red fox crosses the ice, intent on none of my business.";
         final String expected = "ehT der xof sessorc eht eci, tnetni no enon fo ym ssenisub.";
 
-        assertEquals(expected, reverseService.reverse(input));
+        assertThat(reverseService.reverse(input)).isEqualTo(expected);
     }
 
     @Test
@@ -40,24 +40,24 @@ public class ReverseServiceTest {
         final String input = "The r@ed fox cr'osses the #ice, 0intent on none of my business.";
         final String expected = "ehT de@r xof sesso'rc eht eci#, tnetni0 no enon fo ym ssenisub.";
 
-        assertEquals(expected, reverseService.reverse(input));
+        assertThat(reverseService.reverse(input)).isEqualTo(expected);
     }
 
     @Test
     public void reverseSingleCharacter() {
-        assertEquals("A", reverseService.reverse("A"));
-        assertEquals("@", reverseService.reverse("@"));
+        assertThat(reverseService.reverse("A")).isEqualTo("A");
+        assertThat(reverseService.reverse("@")).isEqualTo("@");
     }
 
     @Test
     public void reverseOnlyWhitespaceCharacters() {
-        assertEquals(" ", reverseService.reverse(" "));
-        assertEquals("\t ", reverseService.reverse("\t "));
+        assertThat(reverseService.reverse(" ")).isEqualTo(" ");
+        assertThat(reverseService.reverse("\t ")).isEqualTo("\t ");
     }
 
     @Test
     public void shouldHandleEmptyInput() {
-        assertEquals("", reverseService.reverse(""));
+        assertThat(reverseService.reverse("")).isEqualTo("");
     }
 
     @Test(expected = NullPointerException.class)
