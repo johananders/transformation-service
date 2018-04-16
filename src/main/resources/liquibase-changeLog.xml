@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: johan
+      - sql:
+        sql: CREATE TABLE transformation (id SERIAL PRIMARY KEY, from VARCHAR(2048), to VARCHAR(2048), created TIMESTAMP)
