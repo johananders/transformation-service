@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TransformationRepositoryTest {
+public class TransformationRepositoryIntegrationTest {
 
     @Autowired
     private TransformationRepository transformationRepository;

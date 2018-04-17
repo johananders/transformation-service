@@ -12,7 +12,7 @@ public class ReverseService {
     private static final TokenDelimiterMatcher DELIMITER_MATCHER = new TokenDelimiterMatcher();
 
     /**
-     * Reverses all tokens in a String, keeping the order of the words.
+     * Reverses all tokens in a String, keeping the order of the tokens.
      * Token delimiters are [.,?!] and any whitespace
      *
      * Examples:
@@ -22,7 +22,7 @@ public class ReverseService {
      * " a" -> " a"
      *
      * @param input String to be transformed
-     * @return the transformed String
+     * @return the "reversed" String
      * @throws NullPointerException if input is null
      */
     public String reverse(final String input) {
@@ -31,21 +31,17 @@ public class ReverseService {
         final StringBuilder result = new StringBuilder(input.length());
         final Deque<Character> stack = new ArrayDeque<>();
 
-        for (int i = 0; i < input.length(); i++) {
-            final char c = input.charAt(i);
-
-            if (DELIMITER_MATCHER.matches(c)) {
+        for (int i = 0; i <= input.length(); i++) {
+            if (i == input.length() || DELIMITER_MATCHER.matches(input.charAt(i))) {
                 while (!stack.isEmpty()) {
                     result.append(stack.pop());
                 }
-                result.append(c);
+                if (i < input.length()) {
+                    result.append(input.charAt(i));
+                }
             } else {
-                stack.push(c);
+                stack.push(input.charAt(i));
             }
-        }
-
-        while (!stack.isEmpty()) {
-            result.append(stack.pop());
         }
 
         return result.toString();

@@ -22,6 +22,7 @@ public class Transformation {
     @Column(nullable = false)
     private Instant created;
 
+    @SuppressWarnings("unused")
     private Transformation() {
     }
 

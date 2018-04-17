@@ -64,4 +64,5 @@ public class ReverseServiceTest {
     public void shouldNotAcceptNullInput() {
         reverseService.reverse(null);
     }
+
 }
