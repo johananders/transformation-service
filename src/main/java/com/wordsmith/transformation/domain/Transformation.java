@@ -15,10 +15,10 @@ public class Transformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String original;
-    @Column(nullable = false)
-    private String transformed;
+    @Column(nullable = false, length = 1000)
+    private String result;
     @Column(nullable = false)
     private Instant created;
 
@@ -27,8 +27,8 @@ public class Transformation {
     }
 
     private Transformation(final Builder builder) {
-        this.original = builder.original;
-        this.transformed = builder.transformed;
+        this.original = Objects.requireNonNull(builder.original);
+        this.result = Objects.requireNonNull(builder.result);
     }
 
     public static Builder builder() {
@@ -48,8 +48,8 @@ public class Transformation {
         return original;
     }
 
-    public String getTransformed() {
-        return transformed;
+    public String getResult() {
+        return result;
     }
 
     public Instant getCreated() {
@@ -75,7 +75,7 @@ public class Transformation {
 
     public static final class Builder {
         private String original;
-        private String transformed;
+        private String result;
 
         private Builder() {
         }
@@ -89,8 +89,8 @@ public class Transformation {
             return this;
         }
 
-        public Builder transformed(final String transformed) {
-            this.transformed = transformed;
+        public Builder result(final String result) {
+            this.result = result;
             return this;
         }
     }

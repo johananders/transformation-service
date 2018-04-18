@@ -4,6 +4,7 @@ import com.wordsmith.transformation.api.model.TransformationRequest;
 import com.wordsmith.transformation.api.model.TransformationResponse;
 import com.wordsmith.transformation.dao.TransformationRepository;
 import com.wordsmith.transformation.domain.Transformation;
+import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,18 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransformationService {
 
-    @Autowired
-    private TransformationRepository transformationRepository;
+    private final TransformationRepository transformationRepository;
+    private final ReverseService reverseService;
 
     @Autowired
-    private ReverseService reverseService;
+    public TransformationService(
+        final TransformationRepository transformationRepository,
+        final ReverseService reverseService
+    ) {
+        this.transformationRepository = Objects.requireNonNull(transformationRepository);
+        this.reverseService = Objects.requireNonNull(reverseService);
+    }
 
     public TransformationResponse create(final TransformationRequest transformationRequest) {
         final String reversed = reverseService.reverse(transformationRequest.getText());
 
         final Transformation transformation = Transformation.builder()
             .original(transformationRequest.getText())
-            .transformed(reversed)
+            .result(reversed)
             .build();
 
         final Transformation persisted = transformationRepository.save(transformation);

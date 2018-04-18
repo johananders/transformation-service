@@ -3,7 +3,7 @@ package com.wordsmith.transformation.service;
 import com.wordsmith.transformation.api.model.TransformationResponse;
 import com.wordsmith.transformation.domain.Transformation;
 
-public class TransformationMapper {
+final class TransformationMapper {
 
     private TransformationMapper() {
     }
@@ -12,7 +12,7 @@ public class TransformationMapper {
         return TransformationResponse.builder()
             .id(transformation.getId())
             .original(transformation.getOriginal())
-            .transformed(transformation.getTransformed())
+            .result(transformation.getResult())
             .build();
     }
 }

@@ -2,12 +2,14 @@ package com.wordsmith.transformation.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransformationRequest {
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 1, max = 1000)
     private String text;
 
     @SuppressWarnings("unused")
@@ -32,4 +34,5 @@ public class TransformationRequest {
             "text='" + text + '\'' +
             '}';
     }
+
 }

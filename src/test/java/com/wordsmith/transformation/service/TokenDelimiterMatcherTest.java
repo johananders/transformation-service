@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class TokenDelimiterMatcherTest {
 
-    private TokenDelimiterMatcher tokenDelimiterMatcher = new TokenDelimiterMatcher();
+    private final TokenDelimiterMatcher tokenDelimiterMatcher = new TokenDelimiterMatcher();
     private static final Set<Character> DELIMITERS = ImmutableSet.of('!', '.', ',', '?', ' ', '\n', '\t', '\r');
 
     @Test
@@ -19,7 +19,7 @@ public class TokenDelimiterMatcherTest {
     }
 
     @Test
-    public void shoulNotMatchDelimiters() {
+    public void shouldNotMatchDelimiters() {
         for (char c = 0; c < Character.MAX_VALUE; c++) {
             if (!DELIMITERS.contains(c) && !CharMatcher.whitespace().matches(c)) {
                 assertThat(tokenDelimiterMatcher.matches(c)).isFalse();

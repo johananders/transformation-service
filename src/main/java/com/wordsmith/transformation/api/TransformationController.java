@@ -3,7 +3,9 @@ package com.wordsmith.transformation.api;
 import com.wordsmith.transformation.api.model.TransformationRequest;
 import com.wordsmith.transformation.api.model.TransformationResponse;
 import com.wordsmith.transformation.service.TransformationService;
+import io.swagger.annotations.ApiOperation;
 import java.net.URI;
+import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -25,11 +27,21 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping(value = "/transformations/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TransformationController {
 
+    private final TransformationService transformationService;
+
     @Autowired
-    private TransformationService transformationService;
+    public TransformationController(final TransformationService transformationService) {
+        this.transformationService = Objects.requireNonNull(transformationService);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(
+        value = "Creates a text transformation",
+        notes = "Reverses all individual words, keeping the original order of the words.\n\n"
+            + "Example: \"\"The red fox crosses the ice, intent on none of my business.\" => "
+            + "\"ehT der xof sessorc eht eci, tnetni no enon fo ym ssenisub.\""
+    )
     public ResponseEntity<TransformationResponse> create(
         @RequestBody @Valid @NotNull final TransformationRequest transformationRequest
     ) {
@@ -43,6 +55,7 @@ public class TransformationController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Get a transformation by id")
     public TransformationResponse get(@PathVariable("id") @NotNull final Long id) {
         return transformationService.get(id);
     }
@@ -56,13 +69,8 @@ public class TransformationController {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> notfoundMapper(final Exception e) {
+    public ResponseEntity<String> mapToNotFound(final Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> internalServerErrorMapper(final Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

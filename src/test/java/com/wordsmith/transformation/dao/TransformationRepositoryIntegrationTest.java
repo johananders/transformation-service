@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableList;
 import com.wordsmith.transformation.domain.Transformation;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import org.junit.After;
 import org.junit.Test;
@@ -31,23 +30,24 @@ public class TransformationRepositoryIntegrationTest {
     public void shouldSaveAndGetTransformation() {
         final Transformation transformation = Transformation.builder()
             .original("a")
-            .transformed("b")
+            .result("b")
             .build();
 
         final Transformation saved = transformationRepository.save(transformation);
-        final Transformation result = transformationRepository.findById(saved.getId())
+        final Transformation fetched = transformationRepository.findById(saved.getId())
             .orElseThrow(AssertionError::new);
 
-        assertThat(result.getId()).isEqualTo(saved.getId());
-        assertThat(result.getCreated()).isEqualTo(saved.getCreated());
-        assertThat(result.getOriginal()).isEqualTo("a");
-        assertThat(result.getTransformed()).isEqualTo("b");
+        assertThat(fetched.getId()).isEqualTo(saved.getId());
+        assertThat(fetched.getCreated()).isEqualTo(saved.getCreated());
+        assertThat(fetched.getOriginal()).isEqualTo("a");
+        assertThat(fetched.getResult()).isEqualTo("b");
     }
 
     @Test
     public void getNonExistingEntityReturnsEmptyOptional() {
         final Optional<Transformation> result =
-            transformationRepository.findById(ThreadLocalRandom.current().nextLong(10000, 20000));
+            transformationRepository.findById(1000000000L);
+
         assertThat(result).isEmpty();
     }
 
@@ -58,7 +58,7 @@ public class TransformationRepositoryIntegrationTest {
             .mapToObj(i ->
                 Transformation.builder()
                     .original(Integer.toString(i))
-                    .transformed(Integer.toString(i))
+                    .result(Integer.toString(i))
                     .build()
             )
             .collect(ImmutableList.toImmutableList());
@@ -66,7 +66,6 @@ public class TransformationRepositoryIntegrationTest {
         transformationRepository.saveAll(entities);
 
         final List<Transformation> allEntities = transformationRepository.findAll();
-
         assertThat(allEntities).hasSize(numberOfEntities);
     }
 }

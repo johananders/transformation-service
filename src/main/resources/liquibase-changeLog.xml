@@ -9,8 +9,8 @@
         <sql dbms="postgresql">
             CREATE TABLE transformation (
             id SERIAL PRIMARY KEY,
-            original VARCHAR(2048),
-            transformed VARCHAR(2048),
+            original VARCHAR(1000),
+            processed VARCHAR(1000),
             created TIMESTAMP);
         </sql>
     </changeSet>
