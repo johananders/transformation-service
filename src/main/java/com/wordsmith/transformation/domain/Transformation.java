@@ -73,6 +73,16 @@ public class Transformation {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "Transformation{" +
+            "id=" + id +
+            ", original='" + original + '\'' +
+            ", result='" + result + '\'' +
+            ", created=" + created +
+            '}';
+    }
+
     public static final class Builder {
         private String original;
         private String result;

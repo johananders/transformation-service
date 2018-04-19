@@ -6,11 +6,15 @@ import com.wordsmith.transformation.dao.TransformationRepository;
 import com.wordsmith.transformation.domain.Transformation;
 import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TransformationService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformationService.class);
 
     private final TransformationRepository transformationRepository;
     private final ReverseService reverseService;
@@ -33,6 +37,8 @@ public class TransformationService {
             .build();
 
         final Transformation persisted = transformationRepository.save(transformation);
+
+        LOGGER.info("Crested: {}", persisted);
 
         return TransformationMapper.toTransformationResponse(persisted);
     }
