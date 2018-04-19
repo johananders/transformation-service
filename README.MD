@@ -6,8 +6,8 @@ Transforms and persists text input
 
 ## Architecture
 
-* Application: Spring boot
-* Db: Postgresql
+* Application: Spring boot 2
+* Db: PostgreSQL 10
 
 ## Deployment
 
@@ -29,7 +29,7 @@ Docker, Oracle jdk 8, maven 3
 #### Prerequisites
 
 * Heroku account with app access
-* heroku cli <https://devcenter.heroku.com/articles/heroku-cli?
+* heroku cli <https://devcenter.heroku.com/articles/heroku-cli>
 
 #### Deploy
 
@@ -45,5 +45,7 @@ Docker, Oracle jdk 8, maven 3
 
 Oracle jdk 8, maven 3
 
-* Integration tests uses a h2 in-memory db
-* Run all tests `$ mvn clean test`
+#### Test
+
+* Uses h2 in-memory db
+* Run `$ mvn clean test`
