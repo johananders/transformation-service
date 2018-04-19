@@ -9,6 +9,8 @@ import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +28,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/transformations/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TransformationController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformationController.class);
 
     private final TransformationService transformationService;
 
@@ -45,7 +49,11 @@ public class TransformationController {
     public ResponseEntity<TransformationResponse> create(
         @RequestBody @Valid @NotNull final TransformationRequest transformationRequest
     ) {
+        LOGGER.debug("Create request: {}", transformationRequest);
+
         final TransformationResponse transformationResponse = transformationService.create(transformationRequest);
+
+        LOGGER.debug("Create response: {}", transformationResponse);
 
         final URI uri = buildLocationUri(transformationResponse);
 
@@ -57,7 +65,13 @@ public class TransformationController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get a transformation by id")
     public TransformationResponse get(@PathVariable("id") @NotNull final Long id) {
-        return transformationService.get(id);
+        LOGGER.debug("Get request: {}", id);
+
+        final TransformationResponse transformationResponse = transformationService.get(id);
+
+        LOGGER.debug("Get response: {}", transformationResponse);
+
+        return transformationResponse;
     }
 
     private URI buildLocationUri(final TransformationResponse transformationResponse) {
