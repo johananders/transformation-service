@@ -27,8 +27,10 @@ public class Transformation {
     }
 
     private Transformation(final Builder builder) {
+        this.id = builder.id;
         this.original = Objects.requireNonNull(builder.original);
         this.result = Objects.requireNonNull(builder.result);
+        this.created = builder.created;
     }
 
     public static Builder builder() {
@@ -37,7 +39,9 @@ public class Transformation {
 
     @PrePersist
     public void prePersist() {
-        created = Instant.now();
+        if (created == null) {
+            created = Instant.now();
+        }
     }
 
     public Long getId() {
@@ -84,14 +88,22 @@ public class Transformation {
     }
 
     public static final class Builder {
+
+        private Long id;
         private String original;
         private String result;
+        private Instant created;
 
         private Builder() {
         }
 
         public Transformation build() {
             return new Transformation(this);
+        }
+
+        public Builder id(final Long id) {
+            this.id = id;
+            return this;
         }
 
         public Builder original(final String original) {
@@ -101,6 +113,11 @@ public class Transformation {
 
         public Builder result(final String result) {
             this.result = result;
+            return this;
+        }
+
+        public Builder created(final Instant created) {
+            this.created = created;
             return this;
         }
     }

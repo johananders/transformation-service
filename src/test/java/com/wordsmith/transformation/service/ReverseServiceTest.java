@@ -1,6 +1,7 @@
 package com.wordsmith.transformation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -60,9 +61,10 @@ public class ReverseServiceTest {
         assertThat(reverseService.reverse("")).isEqualTo("");
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldNotAcceptNullInput() {
-        reverseService.reverse(null);
+        assertThatExceptionOfType(NullPointerException.class)
+            .isThrownBy(() -> reverseService.reverse(null));
     }
 
 }

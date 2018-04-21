@@ -7,7 +7,7 @@ import com.wordsmith.transformation.domain.Transformation;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,8 @@ public class TransformationRepositoryIntegrationTest {
     @Autowired
     private TransformationRepository transformationRepository;
 
-    @After
-    public void after() {
+    @Before
+    public void before() {
         transformationRepository.deleteAll();
     }
 
